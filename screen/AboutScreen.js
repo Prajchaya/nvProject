@@ -11,5 +11,5 @@ const AboutScreen = ({ route }) => {
         </View>
     )
 }
-
+ 
 export default AboutScreen

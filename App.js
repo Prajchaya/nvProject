@@ -1,89 +1,54 @@
-import { StyleSheet, Text, View, Button, Image, SafeAreaView} from "react-native";
-import React from "react";
-import HomeScreen from "./screen/HomeScreen";
+import { View, Text, Button } from 'react-native'
+import React from 'react'
 
-import { NavigationContainer,DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { 
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem
-} from "@react-navigation/drawer";
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors:{
-    ...DefaultTheme.colors,
-    primary:'rgb(255,45,85)'
-  }
-
-}
-
-
-function NotificationsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text> Notifications Screen</Text>
+function HomeScreen({navigation}){
+  return(
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Home!</Text>
+      <Button 
+        title="GO TO SETTING" 
+        onPress={()=>
+          navigation.navigate("Setting")
+        }
+      />
     </View>
-  );
-}
-
-
-
-function CustomDrawerContent(props){
-  return(
-    <SafeAreaView style = {{flex : 1}}>
-      <Image style={styles.sideMenuProfileIcon}
-      source={require("./assets/react_logo.png")}
-      />
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props}/>
-      <DrawerItem 
-        label='Close drawer' 
-        onPress={()=> props.navigation.closeDrawer()} 
-      />
-      
-    </DrawerContentScrollView>
-    </SafeAreaView>
   )
 }
-const Drawer = createDrawerNavigator();
 
-
-function MyDrawer(){
+function Setting({navigation}){
   return(
-    <Drawer.Navigator 
-    useLegacyImplementation
-    drawerContent={(props)=><CustomDrawerContent {...props}/>}
-    screenOptions={{
-      drawerStyle:{
-        backgroundColor: 'white',
-        width:240
-      }
-    }}
-    >
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-      </Drawer.Navigator>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Home!</Text>
+      <Button 
+        title="GO TO HOME" 
+        onPress={()=>
+          navigation.navigate("Home")
+        }
+      />
+    </View>
   )
 }
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs(){
+  return(
+   <Tab.Navigator>
+     <Tab.Screen name='Home' component={HomeScreen}/>
+     <Tab.Screen name='Setting' component={Setting}/>
+   </Tab.Navigator>
+  )
+}
+
 const App = () => {
   return (
-    <NavigationContainer theme={MyTheme}>
-      <MyDrawer/>
+    <NavigationContainer>
+      <MyTabs/>
     </NavigationContainer>
-  );
-};
+  )
+}
 
-export default App;
-
-const styles = StyleSheet.create({
-  sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    alignSelf: 'center',
-  },
-})
+export default App

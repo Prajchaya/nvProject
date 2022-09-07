@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Image, SafeAreaView} from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import React from "react";
 import HomeScreen from "./screen/HomeScreen";
 
@@ -29,14 +29,8 @@ function NotificationsScreen() {
   );
 }
 
-
-
 function CustomDrawerContent(props){
   return(
-    <SafeAreaView style = {{flex : 1}}>
-      <Image style={styles.sideMenuProfileIcon}
-      source={require("./assets/react_logo.png")}
-      />
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props}/>
       <DrawerItem 
@@ -45,7 +39,6 @@ function CustomDrawerContent(props){
       />
       
     </DrawerContentScrollView>
-    </SafeAreaView>
   )
 }
 const Drawer = createDrawerNavigator();
@@ -77,13 +70,3 @@ const App = () => {
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    alignSelf: 'center',
-  },
-})

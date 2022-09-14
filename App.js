@@ -24,8 +24,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 function Setting({navigation}){
   return(
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+      <Text>Setting Screen</Text>
       <Button 
         title="GO TO HOME" 
         onPress={()=>
@@ -86,3 +86,4 @@ const App = () => {
 }
 
 export default App
+

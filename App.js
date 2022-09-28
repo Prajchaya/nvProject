@@ -1,89 +1,148 @@
-import { View, Text, Button } from 'react-native'
-import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
-import HomeScreen from "./screen/HomeScreen";
+// import {StyleSheet, Text, View, ActivityIndicator, FlatList, Image,} from "react-native";
+// import React, { useEffect, useState } from "react";
 
+// const App = () => {
+//   const [isLoading, setLoading] = useState(true);
+//   const [data, setData] = useState([]);
 
-import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createDrawerNavigator } from "@react-navigation/drawer";
+//   const getArticles = async () => {
+//     try {
+//       const response = await fetch(
+//         "https://newsapi.org/v2/top-headlines?country=th&apiKey=ab0d4aca4cea481e8157d31c68eb2b23"
+//       );
+//       const json = await response.json();
+//       setData(json.articles);
+//     } catch (error) {
+//       console.error(error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-// function HomeScreen({navigation}){
-//   return(
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text>Home!</Text>
-//       <Button 
-//         title="GO TO SETTING" 
-//         onPress={()=>
-//           navigation.navigate("Setting")
-//         }
-//       />
+//   useEffect(() => {
+//     getArticles();
+//   }, []);
+
+//   const _renderItem = ({ item }) => {
+//     let urlToImage =
+//       item.urlToImage !== null
+//         ? item.urlToImage
+//         : "https://via.placeholder.com/150";
+//     return (
+//       <View style={{ flex: 1 }}>
+//         <View style={{ flex: 1, flexDirection: "row", margin: 5 }}>
+//           <Image 
+//             resizeMode='cover'
+//             source={{uri:urlToImage}}
+//             style = {{flex:1,width:'100%',height:'100%'}}
+//           />
+//           <View style={{width:200,margin:5}}>
+//             <Text style={{fontSize:14, marginBottom:5}}>{item.title}</Text>
+//             <Text style={{fontSize:10}}>{item.source.name}</Text>
+//             <Text style={{fontSize:10}}>{item.source.name}</Text>
+//           </View>
+//         </View>
+//       </View>
+//     );
+//   };
+
+//   return (
+//     <View style={{ flex: 1, padding: 20 }}>
+//       {isLoading 
+//       ? <ActivityIndicator size = "large" color = "#0000ff"/> 
+//       : (
+//         <FlatList 
+//           data = {data}
+//           keyExtractor = {item => item.title}
+//           renderItem = {_renderItem}
+//           />
+//           )}
 //     </View>
-//   )
-// }
+//   );
+// };
 
-function Setting({navigation}){
+// export default App;
+
+// const styles = StyleSheet.create({});
+
+import { StyleSheet, Text, View, Button, Image, SafeAreaView} from "react-native";
+import React from "react";
+import HomeScreen from "./screen/HomeScreen";
+import ProductScreen from "./screen/ProductScreen";
+import DetailScreen from "./screen/DetailScreen";
+
+import { NavigationContainer,DefaultTheme } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { 
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from "@react-navigation/drawer";
+ 
+const MyTheme = {
+  ...DefaultTheme, 
+  colors:{
+    ...DefaultTheme.colors,
+    primary:'rgb(255,45,85)'
+  }
+
+}
+
+function CustomDrawerContent(props){
   return(
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
-      <Text>Setting Screen</Text>
-      <Button 
-        title="GO TO HOME" 
-        onPress={()=>
-          navigation.navigate("Home")
-        }
+    <SafeAreaView style = {{flex : 1}}>
+      <Image style={styles.sideMenuProfileIcon}
+      source={require("./assets/react_logo.png")}
       />
-    </View>
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props}/>
+      <DrawerItem 
+        label='Close drawer' 
+        onPress={()=> props.navigation.closeDrawer()} 
+      />
+      
+    </DrawerContentScrollView>
+    </SafeAreaView>
   )
 }
-
-const Tab = createBottomTabNavigator();
-function MyTabs(){
-  return(
-    <Tab.Navigator
-     screenOptions={({route})=>({
-      tabBarIcon: ({focused,color,size})=>{
-        let iconName;
-        if(route.name==='Home'){
-          iconName = focused
-          ?'ios-information-circle'
-          :'ios-information-circle-outline'
-        } else if(route.name==='Setting'){
-          iconName = focused
-          ?'ios-list-box'
-          :'ios-list'
-        }
-        return<Ionicons name={iconName} size={size} color={color}/>
-      },
-      tabBarActiveTintColor: 'tomato',
-      tabBarInactiveTintColor : 'gray',
-
-     }
-     )
-    }
-    >
-      <Tab.Screen name="Home" component={HomeScreen}/>
-      <Tab.Screen name="Setting" component={Setting}/>
-
-    </Tab.Navigator>
-  )
-}
-
 const Drawer = createDrawerNavigator();
+
+
 function MyDrawer(){
   return(
-    <Drawer.Navigator useLegacyImplementation>
-      <Drawer.Screen name='Home' component={MyTabs}/>
-      <Drawer.Screen name='Setting' component={Setting}/>
-    </Drawer.Navigator>
-  );
+    <Drawer.Navigator 
+    useLegacyImplementation
+    drawerContent={(props)=><CustomDrawerContent {...props}/>}
+    screenOptions={{
+      drawerStyle:{
+        backgroundColor: 'white',
+        width:240
+      }
+    }}
+    >
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Product" component={ProductScreen} />
+        <Drawer.Screen name="Detail" component={DetailScreen} />
+      </Drawer.Navigator>
+  )
 }
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <MyDrawer/>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
+const styles = StyleSheet.create({
+  sideMenuProfileIcon: {
+    resizeMode: 'center',
+    width: 100,
+    height: 100,
+    borderRadius: 100 / 2,
+    alignSelf: 'center',
+  },
+})
